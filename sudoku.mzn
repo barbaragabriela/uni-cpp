@@ -21,9 +21,25 @@ constraint forall(a, o in 1..S)
                         
 solve satisfy;
 
-output ["solution:\n"] ++
-       [show(puzzle[i,j]) ++ if j == N then "\n" else " " endif | i, j in 1..N];
+%output ["solution:\n"] ++
+%       [show(puzzle[i,j]) ++ if j == N then "\n" else " " endif | i, j in 1..N];
        
+
+output ["solution:\n"] ++
+[show(puzzle[i,j]) ++ if (j mod 3 == 0) then
+                        if j == N then
+                          if i mod 3 == 0 then
+                            "\n\n"
+                          else
+                            "\n"
+                          endif
+                        else
+                          "  "
+                        endif
+                    else
+                      " "
+                    endif | i, j in 1..N ];
+
              
                    
                   
