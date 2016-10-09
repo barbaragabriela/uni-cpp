@@ -20,6 +20,12 @@ constraint forall(i in 0..S-1, j in 0..S-1)
                  (alldifferent( [ grid[r, c] | r in i*S+1..i*S+S, c in j*S+1..j*S+S] ));
 
 % horizontal > < comparisions
+% For these two contraints I loop through 1 to 9 and 1 to 6 (N-S, to reuse it)
+% I use integer division / 2 to grab two > or < symbols for each sudoku 3x3 square
+% I adding to the index 0, 1 or 2.
+% Of course this only will work for a sudoku of 9x9, for another size, the expression has
+% to change and make the int division by the value equals to length of symbols columns / S (size of squares)
+% like for this we take to because 6/3 = 2, for a sudoku of 25x25, S=5, we would divide by 4
 constraint forall(i in 1..N, j in 1..N-S)
                  (if horizontal[i,j] == ">" then
                      grid[i,j + (j-1) div 2] > grid[i,j+ (j-1) div 2 + 1]
@@ -38,6 +44,8 @@ constraint forall(j in 1..N, i in 1..N-S)
                  );
 
 solve satisfy;
+% For the solver I tried with all the options but I found that the Gecode or G12 fd took less time than the others
+% both of them finished between 36 and 48ms.
 
 output ["solution:\n"] ++
 [show(grid[i,j]) ++ if (j mod 3 == 0) then
