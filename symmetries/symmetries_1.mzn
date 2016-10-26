@@ -46,22 +46,16 @@ constraint forall(i in G)
                         ( X[i,1,k] = i)
                  );
 
-% constraint forall(k in W)
-%                  (X[1,1,k] = 1);
-% constraint forall(j in S)
-%                  (forall(k in W where k < we)
-%                         ( X[1,j,k] != X[1,j,k+1] )
-%                  );
-
 solve satisfy;
-output [""];
-% output ["w" ++ show(W[k]) ++ "  " | k in W] ++ ["\n"] ++
-%    [show(X[i, j, k]) ++ if (k mod we == 0) then
-%                            if (j mod sz == 0) then
-%                                "\n\n"
-%                            else
-%                            "\n"
-%                            endif
-%                          else
-%                                "   "
-%                          endif | i in G, j in S, k in W];
+
+% output [""];
+output ["w" ++ show(W[k]) ++ "  " | k in W] ++ ["\n"] ++
+   [show(X[i, j, k]) ++ if (k mod we == 0) then
+                           if (j mod sz == 0) then
+                               "\n\n"
+                           else
+                           "\n"
+                           endif
+                         else
+                               "   "
+                         endif | i in G, j in S, k in W];
