@@ -1,6 +1,5 @@
 include "alldifferent.mzn";
 
-
 int: gr;                  % number of groups
 set of int: G = 1..gr;
 int: sz;                  % people by groups
@@ -30,6 +29,7 @@ constraint forall(k, kk in W where k < kk)
 
 solve satisfy;
 
+% output [""];
 output ["w" ++ show(W[k]) ++ "  " | k in W] ++ ["\n"] ++
    [show(X[i, j, k]) ++ if (k mod we == 0) then
                            if (j mod sz == 0) then
