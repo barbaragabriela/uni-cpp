@@ -26,17 +26,42 @@ constraint forall(k, kk in W where k < kk)
                         )
                  );
 
+% Player permutations and in-group permutations
+constraint forall(i in G)
+                 (forall(j in S)
+                       ( X[i,j,1] = j+we*(i-1) )
+                 );
+
+% Group permutations
+constraint forall(k in W)
+                 (forall(i in G)
+                        (forall(j in S where j < sz)
+                               ( X[i,j,k] < X[i,j+1,k] )
+                        )
+                 );
+
+% Week permutations
+constraint forall(i in G)
+                 (forall(k in 2..we)
+                        ( X[i,1,k] = i)
+                 );
+
+% constraint forall(k in W)
+%                  (X[1,1,k] = 1);
+% constraint forall(j in S)
+%                  (forall(k in W where k < we)
+%                         ( X[1,j,k] != X[1,j,k+1] )
+%                  );
 
 solve satisfy;
-
-% output [""];
-output ["w" ++ show(W[k]) ++ "  " | k in W] ++ ["\n"] ++
-   [show(X[i, j, k]) ++ if (k mod we == 0) then
-                           if (j mod sz == 0) then
-                               "\n\n"
-                           else
-                           "\n"
-                           endif
-                         else
-                               "   "
-                         endif | i in G, j in S, k in W];
+output [""];
+% output ["w" ++ show(W[k]) ++ "  " | k in W] ++ ["\n"] ++
+%    [show(X[i, j, k]) ++ if (k mod we == 0) then
+%                            if (j mod sz == 0) then
+%                                "\n\n"
+%                            else
+%                            "\n"
+%                            endif
+%                          else
+%                                "   "
+%                          endif | i in G, j in S, k in W];
