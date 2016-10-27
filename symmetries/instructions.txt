@@ -1,0 +1,44 @@
+
+Read the document "symmetries.pdf" about how to break symmetries in the "Social Golfers Problem". 
+
+Write three different MiniZinc models for the problem. In all of them de data should have the different form:
+
+Data:
+
+int: gr; %number of groups
+set of int: G=1..gr;
+int: sz; %size of groups
+set of int: S=1..sz;
+int: n=gr*sz; %number of players
+set of int: P=1..n;
+int: we; % number of weeks
+set of int: W=1..we;
+
+
+And decision variables should be:
+
+1. array[G,S,W] of var P: X;
+   %X[g,s,w]=k means that the s-th person of group g in week w  is k
+
+2. array[P,W] of var G: X;
+   %X[p,w]=g means that person p in week w plays in group g
+
+3. array[G,W] of var set of P: X;
+   %X[g,w] is the set of people that form group g in week w
+
+For each model, try to write constraints to break each symmetry
+
+EXPERIMENT 1:
+
+- Using one of the models and a small instance (e.g. gr=3, sz=3, we=3) report how many solutions the problem has as you remove the symmetry breaking constraints one by one
+
+One way to count solutions is to use in your model output[""], then solve the problem from the command line with the -a flag and count the number of lines of the ouput. one way to do that is with command,
+
+> minizinc -a golfers.mzn golfers3_3_3.dzn | wc
+
+EXPERIMENT 2:
+
+- Compare the performance of the three models (with all the symmetry breaking constraints) using solver gecode for different small instances. Use a time limit of 5'.
+
+ 
+ minizinc symmetries_1.mzn symmetries.dzn -f "fzn-gecode -n 0 -time 300000" | grep '-' | wc -l
