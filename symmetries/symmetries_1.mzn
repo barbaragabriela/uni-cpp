@@ -25,14 +25,16 @@ constraint forall(k, kk in W where k < kk)
                                )
                         )
                  );
-
-% Player permutations and in-group permutations
+                 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% BReaking symmetries
+% Player permutations
 constraint forall(i in G)
                  (forall(j in S)
                        ( X[i,j,1] = j+we*(i-1) )
                  );
 
-% Group permutations
+% in-group permutations
 constraint forall(k in W)
                  (forall(i in G)
                         (forall(j in S where j < sz)
@@ -40,11 +42,15 @@ constraint forall(k in W)
                         )
                  );
 
-% Week permutations
-constraint forall(i in G)
-                 (forall(k in 2..we)
-                        ( X[i,1,k] = i)
+% Group permutations
+constraint forall(i in G where i < gr)
+                 (forall(k in W)
+                        ( X[i,1,k] < X[i+1,1,k])
                  );
+                 
+% Week permutations
+constraint forall(k in W where k < we)
+                 (X[1,2,k] < X[1,2,k+1]);
 
 solve satisfy;
 
