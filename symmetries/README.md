@@ -12,10 +12,15 @@ Without Group and Week permutations constraints = 1558224
 Without Week and Player permutations and in-group permutations constraints = 363540  
 Without Group and Player permutations and in-group permutations constraints = 1781173  
 
-Without **all** constrains = 2355408
+Without **all** constraints = 2355408
 
 
 #### Model 2: array[P,W] of var G: X;
+
+With 2 constraints = 289  
+With 1 constraint = 2592  
+
+Without **all** constraints = 2444004
 
 
 

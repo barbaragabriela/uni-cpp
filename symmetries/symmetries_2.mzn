@@ -1,4 +1,4 @@
-include "alldifferent.mzn";
+include "globals.mzn";
 
 int: gr;                  % number of groups
 set of int: G = 1..gr;
@@ -9,34 +9,37 @@ set of int: P = 1..n;
 int: we;                  % number of weeks
 set of int: W = 1..we;
 
-%X[g,s,w]=k means that the s-th person of group g in week w  is k
-array[G,S,W] of var P: X;
+%X[p,w]=g means that person p in week w plays in group g
+array[P,W] of var G: X;
 
-% every player plays every week
-constraint forall(k in W)
-                  (alldifferent([X[i, j, k] | i in G, j in S]));
+% every week every player has a group
+constraint forall(p in P, w in W)
+                 (X[p,w] in G);
 
-% Nobody meets more than once
-constraint forall(k, kk in W where k < kk)
-                 (forall(i, ii in G)
-                        (forall(j, jj in S where j != jj)
-                               (forall(j2, jj2 in S where j2 != jj2)
-                                      (X[i,j,k] != X[ii,j2,kk] \/ X[i,jj,k] != X[ii,jj2,kk])
-                               )
-                        )
+% every group has sz players
+constraint forall(w in W, g in G)
+                 (sum(p in P)(bool2int(X[p,w] == g)) == sz
                  );
+                 
+% Nobody meets more than once
+constraint forall(w, ww in W where w != ww)
+                 (forall(p, pp in P where p < pp)
+                        ( X[p,w] != X[pp,w] \/ X[p,ww] != X[pp,ww] )
+                 );
+
+
+constraint forall(p in P)
+                (X[p,1] = (p-1) div 3 + 1);
+
+constraint forall(w in W)
+                 (X[1,w] = 1);
+                 
+% constraint forall(w in W)
+%                  (X[4,w] = 2);
 
 
 solve satisfy;
 
-% output [""];
-output ["w" ++ show(W[k]) ++ "  " | k in W] ++ ["\n"] ++
-   [show(X[i, j, k]) ++ if (k mod we == 0) then
-                           if (j mod sz == 0) then
-                               "\n\n"
-                           else
-                           "\n"
-                           endif
-                         else
-                               "   "
-                         endif | i in G, j in S, k in W];
+output[""];
+% output["# | "] ++ ["w" ++ show(W[k]) ++ "  " | k in W] ++ ["\n"] ++
+% [ if k == 1 then show(x) ++ " | " else "" endif ++ show(X[x,k]) ++ if (k mod we == 0) then "\n" else "   " endif | x in P, k in W];
