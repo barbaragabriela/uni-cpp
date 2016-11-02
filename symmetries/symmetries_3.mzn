@@ -42,11 +42,10 @@ constraint forall(w in W)
                  
 % Week permutations
 constraint forall(w in W where w < we)
-                 (X[2,w] < X[2,w+1]);
+                 (X[1,w] > X[1,w+1]);
 
 
 solve satisfy;
-
 
 % output[""];
 output["#  |  "] ++ ["w" ++ show(W[k]) ++ "         " | k in W] ++ ["\n"] ++

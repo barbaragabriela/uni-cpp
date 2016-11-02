@@ -42,13 +42,13 @@ constraint forall(k in W)
                         )
                  );
 
-% Group permutations
+% % Group permutations
 constraint forall(i in G where i < gr)
                  (forall(k in W)
                         ( X[i,1,k] < X[i+1,1,k])
                  );
                  
-% Week permutations
+% % Week permutations
 constraint forall(k in W where k < we)
                  (X[1,2,k] < X[1,2,k+1]);
 
